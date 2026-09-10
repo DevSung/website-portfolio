@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   토큰은 var 참조로 남겨야(@theme, inline 아님) 사이트별 스코프에서
+   덮어쓸 수 있다. inline을 쓰면 값이 유틸리티에 박혀서 .theme-* 로
+   교체가 안 된다.
+   --------------------------------------------------------------- */
+@theme {
+  --color-brand: #4f6bff;
+  --color-brand-ink: #ffffff;
+  --color-accent: #00d3a7;
+  --color-ink: #12233b;
+  --color-muted: #5b6b80;
+  --color-surface: #ffffff;
+  --color-surface-2: #f4f6fa;
+  --color-line: #e3e8f0;
+
+  --font-kr: var(--font-noto-kr), system-ui, sans-serif;
+  --font-serif-kr: var(--font-nanum-myeongjo), serif;
+  --font-latin: var(--font-geist), system-ui, sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 카페·공방 — 웜 뉴트럴 + 테라코타 */
+.theme-cafe {
+  --color-brand: #6b4a32;
+  --color-brand-ink: #fdfaf6;
+  --color-accent: #c1734a;
+  --color-ink: #2b2118;
+  --color-muted: #7a6a5c;
+  --color-surface: #fbf7f2;
+  --color-surface-2: #f2e8dd;
+  --color-line: #e4d7c8;
+}
+
+/* 병원·클리닉 — 신뢰 블루 + 민트 */
+.theme-clinic {
+  --color-brand: #1b5fa8;
+  --color-brand-ink: #ffffff;
+  --color-accent: #2fa8a0;
+  --color-ink: #12233b;
+  --color-muted: #5b6b80;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1f6fc;
+  --color-line: #dde7f2;
+}
+
+/* 기업·스타트업 — 다크 테크 */
+.theme-corp {
+  --color-brand: #5b74ff;
+  --color-brand-ink: #ffffff;
+  --color-accent: #00d3a7;
+  --color-ink: #eef1f8;
+  --color-muted: #96a0b8;
+  --color-surface: #0b0d14;
+  --color-surface-2: #141826;
+  --color-line: #242b3e;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-kr);
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all; /* 한글은 어절 단위로 끊어야 읽힌다 */
+}
+
+/* 스크롤 등장 효과. 관찰자가 붙기 전에도 콘텐츠는 읽혀야 하므로
+   JS가 죽으면 그냥 보이는 쪽으로 폴백한다. */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s var(--ease-out-soft),
+    transform 0.7s var(--ease-out-soft);
+}
+.reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 28s linear infinite;
+}
+
+/* 양 끝에서 글자가 잘려 나가는 게 보이면 버그처럼 읽힌다 */
+.marquee-mask {
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+}
+
+/* 텍스처 — 사진 없이 배경에 결을 주는 용도 */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E");
+}
