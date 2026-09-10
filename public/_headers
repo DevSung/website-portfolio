@@ -1,0 +1,15 @@
+# Cloudflare 정적 자산 응답 헤더.
+#
+# Next.js 는 보통 자체 서버가 /_next/static/* 에 장기 캐시 헤더를 붙여준다.
+# 정적 파일로 내보내면 그 서버가 없어져 기본값(max-age=0, must-revalidate)이
+# 나가고, 재방문 때마다 폰트와 JS 전부를 재검증한다.
+#
+# 이 경로의 파일명에는 빌드 해시가 들어가 있어 내용이 바뀌면 이름이 바뀐다.
+# 그래서 영구 캐시로 둬도 갱신 문제가 없다.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML 은 반대로 캐시하지 않는다. 배포하면 바로 바뀌어야 한다.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

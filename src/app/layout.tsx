@@ -34,7 +34,6 @@ export const metadata: Metadata = {
   },
   description:
     "업종별 반응형 웹사이트 데모 3종. Next.js · TypeScript · Tailwind CSS로 제작한 제작 사례입니다.",
-  robots: { index: false, follow: false }, // 데모 사이트가 검색에 노출되면 혼란만 준다
 };
 
 export default function RootLayout({

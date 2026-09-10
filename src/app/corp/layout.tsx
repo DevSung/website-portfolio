@@ -4,6 +4,8 @@ import { CorpFooter, CorpHeader } from "./CorpShell";
 import { LangProvider } from "./LangContext";
 
 export const metadata: Metadata = {
+  // 가상 회사가 검색에 걸리면 실제 기업으로 오해받는다.
+  robots: { index: false, follow: false },
   title: "Hyperlane",
   description:
     "물류 운영 데이터 플랫폼. 기업·스타트업 업종 웹사이트 데모입니다. 한국어/영어 전환을 포함합니다.",

@@ -4,6 +4,8 @@ import SiteFooter from "@/components/ui/SiteFooter";
 import SiteHeader from "@/components/ui/SiteHeader";
 
 export const metadata: Metadata = {
+  // 가상 브랜드가 검색에 걸리면 실제 업체로 오해받는다.
+  robots: { index: false, follow: false },
   title: "라온공방",
   description:
     "가죽공예 원데이 클래스와 핸드드립 커피. 카페·공방·스튜디오 업종 웹사이트 데모입니다.",

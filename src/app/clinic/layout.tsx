@@ -4,6 +4,8 @@ import SiteFooter from "@/components/ui/SiteFooter";
 import SiteHeader from "@/components/ui/SiteHeader";
 
 export const metadata: Metadata = {
+  // 가상 의료기관이 검색에 노출되면 실제 환자가 오해한다. 반드시 막는다.
+  robots: { index: false, follow: false },
   title: "바른솔 정형외과의원",
   description:
     "무릎·어깨·척추 통증의 원인부터 확인합니다. 병원·클리닉 업종 웹사이트 데모입니다.",

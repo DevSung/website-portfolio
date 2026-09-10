@@ -8,17 +8,20 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06b6d4?logo=tailwindcss&logoColor=white)
 
+**[→ 데모 열어보기](https://website-portfolio.sungsin1030.workers.dev)**
+
 ---
 
 ## 데모
 
-| 업종 | 브랜드(가상) | 경로 |
+| 업종 | 브랜드(가상) | 링크 |
 |---|---|---|
-| 카페 · 공방 · 스튜디오 | 라온공방 | `/cafe` |
-| 병원 · 클리닉 | 바른솔 정형외과의원 | `/clinic` |
-| 기업 · 스타트업 | Hyperlane | `/corp` |
+| 카페 · 공방 · 스튜디오 | 라온공방 | [열기](https://website-portfolio.sungsin1030.workers.dev/cafe/) |
+| 병원 · 클리닉 | 바른솔 정형외과의원 | [열기](https://website-portfolio.sungsin1030.workers.dev/clinic/) |
+| 기업 · 스타트업 | Hyperlane | [열기](https://website-portfolio.sungsin1030.workers.dev/corp/) |
 
-`/` 는 세 데모를 모아둔 목록 화면입니다. 각 데모 하단의 안내 바로 사이트 간을 바로 넘나들 수 있습니다.
+[목록 화면](https://website-portfolio.sungsin1030.workers.dev)에 세 데모를 모아뒀습니다. 각 데모 하단의
+안내 바로 사이트 간을 바로 넘나들 수 있습니다. 휴대폰으로도 열어보세요.
 
 ---
 
@@ -114,11 +117,42 @@ npm run dev          # http://localhost:3000
 | `npm run dev` | 개발 서버 |
 | `npm run build` | 프로덕션 빌드 (11개 페이지 전부 정적 생성) |
 | `npm run start` | 빌드 결과 실행 |
+| `npm run export` | 정적 파일 내보내기 (`out/`) |
+| `npm run serve:out` | 내보낸 정적 파일 확인 (3200) |
 | `npm run check` | 상호작용 검증 (서버가 떠 있어야 함) |
 | `npm run shots` | 스크린샷 재생성 |
 
-`check` 와 `shots` 는 시스템에 설치된 Chrome 을 사용합니다. 다른 포트를 보려면
-`BASE_URL=http://localhost:3100 npm run check` 처럼 지정합니다.
+`check` 와 `shots` 는 시스템에 설치된 Chrome 을 사용합니다. 대상을 바꾸려면
+`BASE_URL` 을 줍니다 — 배포된 사이트에도 그대로 돌아갑니다.
+
+```bash
+BASE_URL=https://website-portfolio.sungsin1030.workers.dev npm run check
+```
+
+</details>
+
+<details>
+<summary><b>배포</b></summary>
+
+Cloudflare Workers 정적 자산으로 배포합니다. GitHub 저장소를 연결해 두어
+`main` 에 push 하면 자동 배포됩니다.
+
+| 설정 | 값 |
+|---|---|
+| Build command | `NEXT_EXPORT=1 npm run build` |
+| Deploy command | `npx wrangler deploy` |
+| 자산 디렉터리 | `out` (`wrangler.jsonc`) |
+
+서버 코드가 없어 요청이 전부 정적 파일로 처리됩니다. Worker 스크립트가
+실행되지 않으므로 요청 한도와 무관합니다.
+
+정적 내보내기에서는 `trailingSlash` 를 켭니다. 기본 내보내기는
+`out/cafe.html` 을 만드는데 호스트마다 `/cafe` 를 그 파일로 이어줄지가
+달라서(GitHub Pages 는 404), 켜두면 `out/cafe/index.html` 이 되어 어느
+정적 호스트에서든 동작합니다.
+
+`/_next/static/*` 의 장기 캐시 헤더는 `public/_headers` 에서 붙입니다.
+Next.js 자체 서버가 붙여주던 것이라 정적 내보내기에서는 직접 넣어야 합니다.
 
 </details>
 
@@ -148,7 +182,8 @@ ok  데모 안내 바로 사이트 간 이동이 된다
 - **지도** — 카카오맵/네이버지도 SDK 는 도메인 등록과 앱 키가 필요합니다. SVG 약도로 자리만 잡아뒀습니다.
 - **폼 수신** — 메일 발송이나 관리자 화면 저장이 들어갈 자리입니다. 데모에는 받는 쪽이 없습니다.
 - **사진** — 위 "신경 쓴 것" 참고.
-- **검색 노출(SEO)** — 데모가 검색에 걸리면 혼란만 주므로 `robots: noindex` 로 막아뒀습니다.
+- **검색 노출(SEO)** — 데모 세 개는 `robots: noindex` 로 막아뒀습니다. 가상 의료기관이
+  검색에 걸리면 실제 환자가 오해합니다. 목록 화면만 색인을 허용합니다.
 - **클래스 잔여석** — 날짜·시간대에서 계산하는 고정 규칙입니다. 실제 예약 시스템은
   [원데이클래스 예약·결제 시스템](https://github.com/DevSung/oneday-class-booking)에서 별도로 구현했습니다.
 
