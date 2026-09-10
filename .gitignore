@@ -48,3 +48,8 @@ next-env.d.ts
 
 # 임시 스크립트
 *.tmp.mjs
+
+# IDE
+.idea/
+.vscode/
+*.iml
