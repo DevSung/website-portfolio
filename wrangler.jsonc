@@ -1,0 +1,18 @@
+{
+  // Cloudflare Workers 정적 자산 배포 설정.
+  //
+  // main(Worker 스크립트)을 두지 않고 assets 만 선언하면, 요청은 전부
+  // 정적 파일로 처리된다. Worker 코드가 돌지 않으므로 Worker 요청 한도와
+  // 무관하다.
+  //
+  // 빌드는 `NEXT_EXPORT=1 npm run build` 가 out/ 을 만들어 두는 것을
+  // 전제로 한다(next.config.ts 의 output: "export").
+  "name": "website-portfolio",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./out",
+    // 정적 내보내기가 trailingSlash 를 붙이므로 /cafe/ 는 out/cafe/index.html
+    // 으로 이어진다. 없는 경로는 직접 만든 404 화면을 보여준다.
+    "not_found_handling": "404-page"
+  }
+}
