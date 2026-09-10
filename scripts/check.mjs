@@ -37,7 +37,8 @@ await check("모바일 햄버거 메뉴가 열리고 링크가 눌린다", async
   await nav.waitFor({ state: "visible", timeout: 3000 });
 
   await nav.getByRole("link", { name: "의료진" }).click();
-  await page.waitForURL("**/clinic/doctors");
+  // 정적 내보내기는 trailingSlash 를 붙이므로 양쪽을 다 허용한다.
+  await page.waitForURL(/\/clinic\/doctors\/?$/);
 
   // 이동 후에는 닫혀 있어야 한다
   if (await page.locator("#site-mobile-nav").isVisible())
@@ -157,7 +158,7 @@ await check("데모 안내 바로 사이트 간 이동이 된다", async () => {
   const bar = page.locator("[data-demobar]");
   await bar.waitFor({ timeout: 3000 });
   await bar.getByRole("link", { name: "Hyperlane" }).click();
-  await page.waitForURL("**/corp");
+  await page.waitForURL(/\/corp\/?$/);
   await ctx.close();
 });
 

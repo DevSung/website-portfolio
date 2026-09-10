@@ -16,7 +16,7 @@ const notoSansKr = Noto_Sans_KR({
 const nanumMyeongjo = Nanum_Myeongjo({
   variable: "--font-nanum-myeongjo",
   subsets: ["latin"],
-  weight: ["400", "700", "800"],
+  weight: ["400", "700"],
   display: "swap",
   preload: false,
 });
