@@ -53,3 +53,6 @@ next-env.d.ts
 .idea/
 .vscode/
 *.iml
+
+# 크몽 이미지 생성 중간 산출물 (판을 짜서 file:// 로 여는 데만 쓴다)
+docs/kmong/.render.html

@@ -29,6 +29,12 @@ const SHOTS = [
   { id: "12-corp-mobile", url: "/corp", label: "Hyperlane — 모바일", mobile: true },
   { id: "13-corp-en", url: "/corp", label: "Hyperlane — 영어 전환", lang: "en" },
   {
+    id: "15-cafe-classes-mobile",
+    url: "/cafe/classes",
+    label: "라온공방 클래스 — 모바일",
+    mobile: true,
+  },
+  {
     id: "14-mobile-nav",
     url: "/clinic",
     label: "모바일 메뉴 열림",

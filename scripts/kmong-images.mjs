@@ -127,37 +127,40 @@ const MAIN = `
         radial-gradient(70% 70% at 0% 0%, rgba(91,116,255,.55), transparent 68%),
         radial-gradient(50% 50% at 100% 100%, rgba(0,211,167,.28), transparent 70%);
     }
-    .wrap { position: relative; height: 488px; padding: 44px 0 0 46px; }
+    .wrap { position: relative; height: 488px; padding: 42px 0 0 46px; }
     .badge {
       display: inline-block; background: rgba(255,255,255,.14);
       border: 1px solid rgba(255,255,255,.22); border-radius: 999px;
-      padding: 8px 17px; font-size: 18px; font-weight: 800;
+      padding: 8px 17px; font-size: 17px; font-weight: 800;
     }
-    h1 { font-size: 40px; line-height: 1.24; margin-top: 18px; }
+    h1 { font-size: 42px; line-height: 1.2; margin-top: 16px; }
     h1 em { font-style: normal; color: ${C.accent}; }
-    .sub { font-size: 19px; font-weight: 700; color: rgba(255,255,255,.7); margin-top: 14px; }
-    /* 세 장을 사선으로 겹친다 — 업종이 여러 개라는 게 한눈에 보이게 */
-    .deck { position: absolute; right: -60px; bottom: -26px; width: 420px; height: 300px; }
-    /* 위치를 잡는 건 래퍼 div 다. .frame 에 absolute 를 주면 세 장이
-       같은 자리에 겹쳐 한 장만 보인다. */
-    .deck > div { position: absolute; width: 300px; }
-    .deck .frame { border-radius: 12px; }
-    .deck .frame img { height: 200px; }
-    .deck .bar { height: 20px; padding: 0 10px; gap: 5px; }
+    .sub { font-size: 18px; font-weight: 700; color: rgba(255,255,255,.7); margin-top: 14px; line-height: 1.5; }
+    /* 겹친 화면이 캔버스 밖으로 나가면 안 된다. 맨 앞 장의 오른쪽이
+       잘리면 이미지가 깨진 것처럼 보이고, 아래쪽이 잘리면 본문 한 줄이
+       반만 남아 글자가 망가진 것처럼 읽힌다. 그래서 덱 전체를 안쪽에 둔다. */
+    .deck { position: absolute; right: 28px; bottom: 26px; width: 340px; height: 267px; }
+    .deck > div { position: absolute; width: 248px; }
+    /* 뒤쪽 두 장은 어두운 히어로라 배경에 묻는다. 밝은 테두리로 떼어낸다. */
+    .deck .frame { border-radius: 12px; border-color: rgba(255,255,255,.16); }
+    .deck .bar { height: 19px; padding: 0 10px; gap: 5px; }
     .deck .dot { width: 6px; height: 6px; }
-    .d1 { left: 0; top: 74px; box-shadow: -14px 16px 40px rgba(0,0,0,.5); }
-    .d2 { left: 58px; top: 37px; box-shadow: -14px 16px 40px rgba(0,0,0,.5); }
-    .d3 { left: 116px; top: 0; box-shadow: -14px 16px 40px rgba(0,0,0,.5); }
+    /* 원본이 2160px 짜리 전체 페이지라 그대로 줄이면 글자가 뭉개진다.
+       조금 확대해 히어로 영역만 보이게 한다. */
+    .deck .frame img { width: 150%; object-position: left top; }
+    .d1 { left: 0; top: 96px; box-shadow: -14px 16px 40px rgba(0,0,0,.5); }
+    .d2 { left: 46px; top: 48px; box-shadow: -14px 16px 40px rgba(0,0,0,.5); }
+    .d3 { left: 92px; top: 0; box-shadow: -14px 16px 40px rgba(0,0,0,.5); }
   </style>
   <div class="glow"></div>
   <div class="wrap">
     <span class="badge">경력 5년 개발자</span>
-    <h1>홈페이지 제작부터<br><em>기능 개발까지</em></h1>
-    <p class="sub">화면과 서버를 한 사람이</p>
+    <h1>화면 따로,<br>개발자 따로<br><em>쓰지 마세요</em></h1>
+    <p class="sub">기획 · 디자인부터<br>예약 · 결제 서버까지</p>
     <div class="deck">
-      <div class="d1">${browserFrame(shot("09-corp-home.png"), 200)}</div>
-      <div class="d2">${browserFrame(shot("05-clinic-home.png"), 200)}</div>
-      <div class="d3">${browserFrame(shot("01-cafe-home.png"), 200)}</div>
+      <div class="d1">${browserFrame(shot("09-corp-home.png"), 150)}</div>
+      <div class="d2">${browserFrame(shot("05-clinic-home.png"), 150)}</div>
+      <div class="d3">${browserFrame(shot("01-cafe-home.png"), 150)}</div>
     </div>
   </div>`;
 
@@ -204,26 +207,28 @@ const casePage = (c) => `
     </div>
   </div>`;
 
+/* 이미지 제목은 서비스 설명의 소제목을 그대로 쓴다. 글과 이미지가
+   같은 문구로 이어지면 스크롤할 때 한 덩어리로 읽힌다. */
 const PAGES = [
   {
-    id: "01-cover",
+    id: "01-hook",
     html: `
     <style>${BASE_CSS}
       .glow { position:absolute; inset:0;
         background: radial-gradient(50% 45% at 10% 5%, rgba(91,116,255,.42), transparent 70%),
                     radial-gradient(40% 40% at 95% 25%, rgba(0,211,167,.2), transparent 70%); }
       body { position: relative; }
-      h1 { font-size: 60px; }
-      .lead { font-size: 24px; }
+      h1 { font-size: 62px; }
+      h1 em { font-style: normal; color: ${C.accent}; }
+      .lead { font-size: 25px; }
     </style>
     <div class="glow"></div>
     <div class="wrap" style="position:relative">
-      <p class="eyebrow">Stack</p>
-      <h1>반응형 웹 + 서버 기능</h1>
-      <p class="lead" style="max-width:860px">
-        Next.js와 TypeScript로 화면을 구현하고, 예약과 결제, 관리자처럼 서버가
-        필요한 부분은 Spring Boot로 붙입니다. 정적 파일로 빌드해 배포하며
-        도메인 연결까지 진행합니다.
+      <h1>화면 따로, 개발자 따로<br><em>쓰지 마세요</em></h1>
+      <p class="lead" style="max-width:880px">
+        기획과 디자인부터 예약·결제 서버 개발까지 한 사람이 책임지고 완성합니다.
+        화면 개발자와 서버 개발자가 다르면 소통 비용과 납품 지연이 생기고,
+        결제가 안 된다며 서로 책임을 떠넘기는 일이 흔히 일어납니다.
       </p>
       <div style="margin-top:46px;display:flex;gap:14px;flex-wrap:wrap">
         ${["Next.js", "React", "TypeScript", "Spring Boot", "Java · Kotlin", "MySQL", "AWS"]
@@ -233,63 +238,56 @@ const PAGES = [
   },
 
   {
-    id: "02-about",
+    id: "02-target",
     html: `
     <style>${BASE_CSS}
-      .stat { padding: 34px 38px; }
-      .stat .num { font-size: 52px; }
-      .stat .num-label { font-size: 18px; margin-top: 10px; }
-      .item { padding: 26px 30px; }
-      .item h3 { font-size: 26px; }
+      .t { padding: 34px 40px; display: flex; gap: 24px; align-items: flex-start; }
+      .t .no { font-size: 26px; font-weight: 800; color: ${C.accent}; flex: none; }
+      .t p { font-size: 25px; line-height: 1.5; font-weight: 700; }
     </style>
     <div class="wrap">
-      <p class="eyebrow">Background</p>
-      <h2>백엔드 5년</h2>
-      <p class="lead" style="max-width:900px;font-size:23px">
-        골프 플랫폼과 애드테크에서 백엔드를 담당했습니다. 현재 광고 데이터
-        플랫폼에서 수천만 행 규모의 리포팅 데이터를 다루며, 집계 프로시저
-        실행시간을 4~10배 단축했습니다.
-      </p>
-      <div class="grid3" style="margin-top:46px">
-        ${[["5년", "실무 경력"], ["프론트 + 백엔드", "담당 범위"], ["4건", "공개 포트폴리오"]]
-          .map(([v, k]) => `
-          <div class="card stat">
-            <p class="num" style="font-size:${v.length > 4 ? 34 : 52}px">${v}</p>
-            <p class="num-label">${k}</p>
+      <p class="eyebrow">For</p>
+      <h2>이런 대표님께 추천합니다</h2>
+      <div style="margin-top:44px;display:grid;gap:18px">
+        ${[
+          "흔한 템플릿 복사 사이트가 아닌, 업종 특성에 맞춘 화면이 필요한 분",
+          "PC는 물론 모바일 최적화가 필수적인 분",
+          "문의 폼, 예약, 결제가 실제로 안정 동작해야 하는 분",
+          "화면과 서버를 따로 발주해 소통하기 번거로운 분",
+        ].map((t, i) => `
+          <div class="card t">
+            <span class="no">0${i + 1}</span>
+            <p>${t}</p>
           </div>`).join("")}
-      </div>
-      <h3 style="margin-top:60px;font-size:30px">구현 범위</h3>
-      <div class="grid3" style="margin-top:26px">
-        ${["인증 · 권한", "결제 · 정산", "알림 발송", "예약 · 재고", "관리자 도구", "배치 · 스케줄러"]
-          .map((t) => `<div class="card item"><h3>${t}</h3></div>`).join("")}
       </div>
     </div>`,
   },
 
-  /* 사례를 서비스 안에도 되살린다. 구매자가 제일 먼저 보고 싶은 것이
-     "이 사람이 만든 화면"이고, 포트폴리오까지 클릭하는 사람은 소수다. */
   {
     id: "03-cases",
     html: `
     <style>${BASE_CSS}
       .case { margin-top: 34px; }
-      .case .meta { display: flex; align-items: baseline; gap: 18px; margin-bottom: 16px; }
+      .case .meta { display: flex; align-items: baseline; gap: 18px; margin-bottom: 14px; }
       .case h3 { font-size: 32px; }
       .case .cat { font-size: 20px; font-weight: 700; color: ${C.accent}; }
-      .case .p { font-size: 19px; margin-top: 10px; max-width: 900px; }
+      .case .p { font-size: 20px; margin-top: 8px; max-width: 900px; }
     </style>
     <div class="wrap">
-      <p class="eyebrow">Cases</p>
-      <h2>구현 사례</h2>
+      <p class="eyebrow">Demo</p>
+      <h2>실제 동작하는 업종별 데모 사이트</h2>
+      <p class="lead" style="max-width:900px;font-size:22px">
+        직접 기획하고 제작한 3가지 업종의 데모입니다. 동작 주소는 메시지로 안내해 드립니다.
+      </p>
       ${[
-        ["카페 · 공방", "라온공방", "날짜와 클래스 선택에 따라 시간대별 잔여 좌석을 계산하고, 마감 슬롯은 예약 버튼을 비활성 처리합니다.", "01-cafe-home.png"],
-        ["병원 · 클리닉", "바른솔 정형외과의원", "진료과목을 증상 태그로 색인했습니다. 비급여 진료비용 표에 caption과 th scope를 명시했습니다.", "05-clinic-home.png"],
-        ["기업 · 스타트업", "Hyperlane", "useSyncExternalStore 로 한국어 / 영어를 전환합니다. 탭 간 동기화와 html lang 속성 변경을 함께 처리합니다.", "09-corp-home.png"],
+        ["카페 / 공방", "라온공방", "감성 브랜딩 화면, 원데이 클래스 일정과 잔여 좌석 안내", "01-cafe-home.png"],
+        ["병원 / 클리닉", "바른솔 정형외과의원", "모바일 맞춤 진료 안내, 온라인 예약 및 비급여 항목 안내", "05-clinic-home.png"],
+        ["B2B / 스타트업", "Hyperlane", "전문적인 테크 기업 디자인, 국·영문 다국어 전환", "09-corp-home.png"],
       ].map(([cat, brand, note, img]) => `
         <div class="case">
           <div class="meta"><span class="cat">${cat}</span><h3>${brand}</h3></div>
           <p class="p">${note}</p>
-          <div style="margin-top:16px">${browserFrame(shot(img), 380)}</div>
+          <div style="margin-top:14px">${browserFrame(shot(img), 350)}</div>
         </div>`).join("")}
     </div>`,
   },
@@ -302,68 +300,87 @@ const PAGES = [
       .mob .frame img { height: 700px; }
     </style>
     <div class="wrap">
-      <p class="eyebrow">Mobile first</p>
-      <h2>모바일 우선 구현</h2>
+      <p class="eyebrow">Responsive</p>
+      <h2>PC는 물론, 모바일이 더 중요합니다</h2>
       <p class="lead" style="max-width:900px;font-size:23px">
-        모바일 뷰포트를 기준으로 작성하고 미디어 쿼리로 확장합니다. 내비게이션은
-        햄버거로 전환되고, 표는 컨테이너 가로 스크롤, 폼은 1열로 배치됩니다.
-        스크롤 등장 효과는 prefers-reduced-motion 설정을 따라 비활성화됩니다.
+        모바일 화면을 먼저 만들고 데스크톱으로 넓힙니다. 메뉴는 접히고, 표는 가로로
+        스크롤되고, 폼은 한 줄씩 내려갑니다. 크롬, 사파리, 엣지에서 모두 확인합니다.
       </p>
       <div class="mob">
-        ${["04-cafe-mobile.png", "08-clinic-mobile.png", "12-corp-mobile.png", "14-mobile-nav.png"]
+        ${["04-cafe-mobile.png", "15-cafe-classes-mobile.png", "08-clinic-mobile.png", "12-corp-mobile.png"]
           .map((f) => browserFrame(shot(f), 700)).join("")}
       </div>
     </div>`,
   },
 
-  /* 카드 본문을 없애고 항목명만 크게 둔다. 1800px 이미지를 폰 폭으로
-     줄이면 16px 본문은 3.5px가 되어 읽히지 않는다. 설명은 서비스
-     설명 본문에 이미 들어가 있다. */
   {
-    id: "05-server",
+    id: "05-about",
     html: `
     <style>${BASE_CSS}
-      .item { padding: 32px 36px; }
-      .item h3 { font-size: 30px; }
-      .item p { font-size: 19px; color: ${C.muted}; margin-top: 10px; }
+      .stat { padding: 34px 38px; }
+      .stat .num { font-size: 50px; }
+      .stat .num-label { font-size: 18px; margin-top: 10px; }
     </style>
     <div class="wrap">
-      <p class="eyebrow">Server · API</p>
-      <h2>서버 · API</h2>
-      <p class="lead" style="max-width:900px;font-size:23px">
-        아래 항목은 화면 작업과 같은 저장소, 같은 일정으로 진행합니다. 별도 발주나
-        인수인계 과정이 없습니다.
+      <p class="eyebrow">About</p>
+      <h2>운영에서 버티는 개발을 합니다</h2>
+      <p class="lead" style="max-width:920px;font-size:23px">
+        실무 개발 경력 5년 차입니다. 트래픽과 데이터가 몰리는 골프 플랫폼과 애드테크
+        서비스에서 백엔드를 담당했습니다. 현재는 광고 데이터 플랫폼에서 수천만 행
+        규모의 리포팅 데이터를 다루며, 집계 프로시저 실행시간을 4~10배 단축했습니다.
       </p>
-      <div class="grid2" style="margin-top:44px">
-        ${[
-          ["인증 · 권한", "소셜 로그인 · 접근 제어"],
-          ["예약 · 재고", "중복 처리 차단"],
-          ["결제 · 정산", "금액 검증 · 정산 집계"],
-          ["알림 발송", "알림톡 · SMS · 메일"],
-        ].map(([t, b]) => `<div class="card item"><h3>${t}</h3><p>${b}</p></div>`).join("")}
+      <div class="grid3" style="margin-top:48px">
+        ${[["5년", "실무 경력"], ["수천만 행", "리포팅 데이터"], ["4~10배", "집계 속도 개선"]]
+          .map(([v, k]) => `
+          <div class="card stat">
+            <p class="num" style="font-size:${v.length > 3 ? 38 : 50}px">${v}</p>
+            <p class="num-label">${k}</p>
+          </div>`).join("")}
       </div>
-      <div class="card" style="margin-top:36px;padding:38px 42px">
-        <p class="tag" style="font-size:20px">결제 정합성</p>
-        <p class="p" style="margin-top:16px;font-size:22px;line-height:1.65">
-          클라이언트가 전송한 금액을 신뢰하지 않고, 서버 산정 금액과 PG 승인 금액을
-          이중 대조합니다. 좌석 차감은 행 단위 배타 락과 DB 제약으로 이중 처리하며,
-          100 스레드 동시 요청으로 검증했습니다.
-        </p>
-        <div class="row" style="margin-top:30px">
-          ${[["101", "자동화 테스트"], ["8", "화면"], ["3", "결제 반영 경로"]]
-            .map(([v, k]) => `
-            <div>
-              <p class="num" style="font-size:42px">${v}</p>
-              <p class="num-label" style="font-size:17px">${k}</p>
-            </div>`).join("")}
-        </div>
+      <h3 style="margin-top:56px;font-size:30px">함께 맡기실 수 있는 범위</h3>
+      <div class="grid3" style="margin-top:24px">
+        ${["인증 · 권한", "결제 · 정산", "알림 발송", "예약 · 재고", "관리자 도구", "배치 · 스케줄러"]
+          .map((t) => `<div class="card" style="padding:26px 30px"><h3 style="font-size:25px">${t}</h3></div>`).join("")}
       </div>
     </div>`,
   },
 
   {
-    id: "06-price",
-    light: true,
+    id: "06-safety",
+    html: `
+    <style>${BASE_CSS}
+      .item { padding: 32px 36px; }
+      .item h3 { font-size: 27px; }
+      .item p { font-size: 19px; color: ${C.muted}; margin-top: 12px; line-height: 1.6; }
+    </style>
+    <div class="wrap">
+      <p class="eyebrow">Safety</p>
+      <h2>돈과 자리가 오가는 기능,<br>이렇게 안전하게 만듭니다</h2>
+      <p class="lead" style="max-width:900px;font-size:22px">
+        결제 오류는 곧 금전 손실과 고객 이탈로 이어집니다. 예외 처리와 테스트로
+        검증했습니다.
+      </p>
+      <div class="grid2" style="margin-top:42px">
+        ${[
+          ["결제 금액 위조 차단", "클라이언트가 전달한 금액을 신뢰하지 않고, 서버 산정액과 결제사 승인액을 교차 검증합니다."],
+          ["초과 판매 및 중복 예약 방지", "정원 10석에 100건이 동시 신청해도 자리가 마이너스가 되지 않도록 동시성을 제어합니다."],
+          ["통신 장애 예외 처리", "승인은 됐으나 응답이 유실되어도 예약을 타인에게 재판매하지 않고, 결제사 상태를 재대조해 정상화합니다."],
+          ["중복 결제 방지", "결제 중 새로고침이나 중복 클릭으로 인한 다중 청구를 차단합니다."],
+        ].map(([t, b]) => `<div class="card item"><h3>${t}</h3><p>${b}</p></div>`).join("")}
+      </div>
+      <div class="row" style="margin-top:38px">
+        ${[["101", "자동화 테스트"], ["8", "화면"], ["3", "결제 반영 경로"]]
+          .map(([v, k]) => `
+          <div class="card" style="padding:26px 38px">
+            <p class="num" style="font-size:40px">${v}</p>
+            <p class="num-label" style="font-size:17px">${k}</p>
+          </div>`).join("")}
+      </div>
+    </div>`,
+  },
+
+  {
+    id: "07-price",
     html: `
     <style>${BASE_CSS}${LIGHT_CSS}
       .pk { padding: 40px; }
@@ -376,12 +393,12 @@ const PAGES = [
     </style>
     <div class="wrap">
       <p class="eyebrow">Package</p>
-      <h2>패키지</h2>
+      <h2>필요한 만큼만 고르시면 됩니다</h2>
       <div class="grid3" style="margin-top:44px">
         ${[
           ["STANDARD", "66만원", false, ["반응형 5페이지", "문의 폼 수신 연동", "도메인 연결 + 배포", "수정 2회 · 작업 14일"]],
-          ["DELUXE", "177만원", true, ["STANDARD 전체 포함", "페이지 8개까지", "예약 신청 기능", "관리자 화면", "수정 3회 · 작업 25일"]],
-          ["PREMIUM", "297만원", false, ["DELUXE 전체 포함", "결제 연동", "중복 결제 차단", "소스 코드 제공", "수정 4회 · 작업 35일"]],
+          ["DELUXE", "177만원", true, ["STANDARD 전체 포함", "페이지 8개까지", "예약 신청 기능", "관리자 대시보드", "수정 3회 · 작업 25일"]],
+          ["PREMIUM", "297만원", false, ["DELUXE 전체 포함", "PG 결제 연동", "중복 결제 차단", "소스 코드 제공", "수정 4회 · 작업 35일"]],
         ].map(([n, p, best, items]) => `
           <div class="card pk ${best ? "best" : ""}">
             <p class="tag">${n}</p>
@@ -403,35 +420,42 @@ const PAGES = [
   },
 
   {
-    id: "07-process",
-    light: true,
+    id: "08-process",
     html: `
     <style>${BASE_CSS}${LIGHT_CSS}
-      .step { padding: 32px 36px; }
-      .step h3 { font-size: 27px; }
-      .step p { font-size: 19px; line-height: 1.6; margin-top: 12px; }
+      .step { padding: 30px 34px; }
+      .step h3 { font-size: 26px; }
+      .step p { font-size: 19px; line-height: 1.6; margin-top: 10px; }
     </style>
     <div class="wrap">
       <p class="eyebrow">Process</p>
-      <h2>진행 순서</h2>
-      <div class="grid2" style="margin-top:44px">
+      <h2>진행 순서와 안내 사항</h2>
+      <div class="grid2" style="margin-top:42px">
         ${[
-          ["01  상담 · 견적", "필요한 페이지와 기능을 정하고 견적을 확정합니다."],
+          ["01  상담 · 견적", "업종과 원하시는 기능을 알려주시면 제작 방식과 기간, 견적을 안내합니다."],
           ["02  구조 설계", "화면 순서와 메뉴 구조를 먼저 잡아 보여드립니다."],
           ["03  디자인 · 퍼블리싱", "모바일 우선으로 만들고 중간에 실제 주소로 보여드립니다."],
           ["04  기능 연동", "문의 폼, 예약, 결제를 붙입니다."],
-          ["05  배포 · 인수인계", "도메인을 연결하고 수정 방법 문서를 드립니다."],
+          ["05  배포 · 인수인계", "도메인을 연결하고 직접 수정하실 수 있는 안내서를 드립니다."],
           ["06  수정 대응", "패키지에 포함된 횟수만큼 수정해 드립니다."],
         ].map(([t, b]) => `
           <div class="card step"><h3>${t}</h3><p class="p">${b}</p></div>`).join("")}
       </div>
-      <div class="card" style="margin-top:40px;padding:38px 42px">
-        <h3 style="font-size:27px">진행 방식</h3>
-        <p class="p" style="margin-top:16px;font-size:21px;line-height:1.65">
-          중간 산출물은 실제 배포 주소로 공유합니다. 인수인계 시 수정 가이드 문서를
-          함께 드려 문구와 이미지는 직접 교체하실 수 있습니다. 회신은 평일 기준 1일
-          이내입니다. 도메인과 서버 이용료는 별도이며 연결 작업은 제가 합니다.
-        </p>
+      <div class="grid2" style="margin-top:34px">
+        <div class="card" style="padding:34px 38px">
+          <h3 style="font-size:25px">준비해 주시면 더 좋은 것</h3>
+          <p class="p" style="margin-top:14px;font-size:19px;line-height:1.65">
+            로고, 매장 및 제품 사진, 소개 문구. 준비되지 않았더라도 임시 소재로
+            제작 가능하나, 실제 자료가 있을 때 완성도가 훨씬 높아집니다.
+          </p>
+        </div>
+        <div class="card" style="padding:34px 38px">
+          <h3 style="font-size:25px">불포함 내역</h3>
+          <p class="p" style="margin-top:14px;font-size:19px;line-height:1.65">
+            도메인 구입비와 서버 이용료 (세팅과 연결 작업은 포함), 로고 디자인과
+            사진 촬영, PG사 가입 심사, 납품 후 정기 유지보수.
+          </p>
+        </div>
       </div>
     </div>`,
   },
